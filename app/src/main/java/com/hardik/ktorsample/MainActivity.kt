@@ -11,18 +11,17 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import android.view.Menu
 import android.view.MenuItem
-import com.hardik.ktorsample.data.remote.PostsService
-import com.hardik.ktorsample.data.remote.dto.PostResponse
+import com.hardik.ktorsample.data.network.model.Post
 import com.hardik.ktorsample.databinding.ActivityMainBinding
-import kotlinx.coroutines.GlobalScope
+import com.hardik.ktorsample.repository.MyRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
-
-    private val service = PostsService.create()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
@@ -43,14 +42,24 @@ class MainActivity : AppCompatActivity() {
                 .setAction("Action", null).show()
         }
 
-        GlobalScope.launch {
-            val posts = service.getPosts().iterator().forEach { post ->
-                Log.e("TAG", "onCreate: $post", )
-            }
+        CoroutineScope(Dispatchers.IO).launch {
+//            Log.d("TAG", "onCreate: ${MyRepository().getPosts()}")
+//            Log.d("TAG", "onCreate: ${MyRepository().getComments("1")}")
+            val post = Post(
+                id = 1,
+                title = "title is hardik",
+                body = "body is changed",
+                userId = 12
+            )
+//            Log.d("TAG", "onCreate: ${MyRepository().postPost(post)}")
+//            Log.d("TAG", "onCreate: ${MyRepository().putPost(1,post)}")
 
+            val map = mutableMapOf<String, String>()
+            map.put("body", "this is not body")
+//            Log.d("TAG", "onCreate: ${MyRepository().patchPost(1,map)}")
+            Log.d("TAG", "onCreate: ${MyRepository().deletePost(1).status}")
 
         }
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

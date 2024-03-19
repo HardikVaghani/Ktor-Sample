@@ -1,9 +1,9 @@
-package com.hardik.ktorsample.data.remote.dto
+package com.hardik.ktorsample.data.network.model
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class PostResponse(
+data class Post(
     val body: String,
     val title: String,
     val id: Int,
